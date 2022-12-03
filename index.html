@@ -1,44 +1,47 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>WebAR Face Tracking</title>
-    <style>
-      body {
-        margin: 0;
-        overflow: hidden;
+<head>
+  <meta charset="UTF-8">
+  <title>WebAR Face Tracking Example</title>
+</head>
+<body>
+
+    <a-scene embedded arjs='sourceType: webcam;'>
+    <!-- 顔の任意の場所にGLBファイルを表示する -->
+    <a-marker-camera preset='hiro'></a-marker-camera>
+    <a-entity gltf-model="url(model.glb)" scale="0.1 0.1 0.1" face-tracking></a-entity>
+
+  <div id="webar-container"></div>
+  <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-extras. face-tracking@^3.0.0/dist/aframe-extras.face-tracking.min.js"></script>
+  <script>
+    AFRAME.registerComponent('face-tracking', {
+      init: function() {
+        // Set up face-tracking
+        var scene = this.el.sceneEl;
+        var camera = this.el.camera;
+        var faceTracking = scene.systems['face-tracking'];
+        faceTracking.init(camera);
+        
+        // Get the face-tracking data
+        var faceData = faceTracking.data;
+        
+        // Create the GLB entity
+        var glbEl = document.createElement('a-entity');
+        glbEl.setAttribute('gltf-model', '#my-model');
+        glbEl.setAttribute('scale', '0.01 0.01 0.01');
+        
+        // Place the GLB entity on the face
+        glbEl.setAttribute('position', {
+          x: faceData.position.x,
+          y: faceData.position.y,
+          z: faceData.position.z
+        });
+        
+        // Add the GLB entity to the scene
+        scene.appendChild(glbEl);
       }
-      #ar-canvas {
-        width: 100%;
-        height: 100%;
-      }
-    </style>
-  </head>
-  <body>
-    <canvas id="ar-canvas"></canvas>
-
-    <!-- Load the WebARonARCore library. -->
-    <script src="https://storage.googleapis.com/webar-assets/0.6.0/webar-polyfill.js"></script>
-
-    <!-- Load the 3D model. -->
-    <model-viewer src="model.glb" ios-src="model.usdz" alt="3D model" auto-rotate camera-orbit="0deg 75deg 10m"></model-viewer>
-
-    <script>
-      // Get the canvas element.
-      const canvas = document.getElementById("ar-canvas");
-
-      // Create a face tracker.
-      const faceTracker = new FaceTracker();
-
-      // Start tracking the face.
-      faceTracker.start(canvas);
-
-      // Get the 3D model element.
-      const model = document.querySelector("model-viewer");
-
-      // Set the position of the model based on the face tracker data.
-      faceTracker.onUpdate(function(data) {
-        model.setAttribute("position", data.position);
-      });
-    </script>
-  </body>
+    });
+  </script>
+</body>
 </html>
