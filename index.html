@@ -1,70 +1,44 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <script src="https://unpkg.com/tracking@1.1.5/build/tracking-min.js"></script>
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
+<html>
+  <head>
+    <title>WebAR Face Tracking</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+      }
+      #ar-canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="ar-canvas"></canvas>
 
-<script>
-  // Check if the browser supports WebRTC
-  if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-    // Get the user's webcam stream
-    navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-      // Create a video element and set its source to the webcam stream
-      var video = document.createElement('video');
-      video.srcObject = stream;
-      video.onloadedmetadata = function() {
-        // Start playing the video
-        video.play();
+    <!-- Load the WebARonARCore library. -->
+    <script src="https://storage.googleapis.com/webar-assets/0.6.0/webar-polyfill.js"></script>
 
-        // Create a face tracker and pass it the video element
-        var tracker = new tracking.ObjectTracker('face');
-        tracker.setInitialScale(4);
-        tracker.setStepSize(2);
-        tracker.setEdgesDensity(0.1);
-        tracking.track(video, tracker);
+    <!-- Load the 3D model. -->
+    <model-viewer src="model.glb" ios-src="model.usdz" alt="3D model" auto-rotate camera-orbit="0deg 75deg 10m"></model-viewer>
 
-        // Add an event listener to the tracker to receive face tracking updates
-        tracker.on('track', function(event) {
-          // Clear any previous tracking overlays
-          document.querySelectorAll('.face-overlay').forEach(function(overlay) {
-            overlay.remove();
-          });
+    <script>
+      // Get the canvas element.
+      const canvas = document.getElementById("ar-canvas");
 
-          // For each face detected in the frame, add an overlay and a 3D object
-          event.data.forEach(function(rect) {
-            var div = document.createElement('div');
-            div.classList.add('face-overlay');
-            div.style.width = rect.width + 'px';
-            div.style.height = rect.height + 'px';
-            div.style.left = rect.x + 'px';
-            div.style.top = rect.y + 'px';
-            document.querySelector('body').appendChild(div);
+      // Create a face tracker.
+      const faceTracker = new FaceTracker();
 
-            // Create an A-Frame scene and add the 3D object to it
-            var scene = document.createElement('a-scene');
-            var obj = document.createElement('a-obj-model');
-            obj.setAttribute('src', 'model.glb');
-            obj.setAttribute('position', '0 0 -2');
-            scene.appendChild(obj);
-            div.appendChild(scene);
-          });
-        });
-      };
-    });
-  }
-</script>
+      // Start tracking the face.
+      faceTracker.start(canvas);
 
-<!-- CSS styles for the face overlays -->
-<style>
-  .face-overlay {
-    position: absolute;
-   
+      // Get the 3D model element.
+      const model = document.querySelector("model-viewer");
 
-</body>
+      // Set the position of the model based on the face tracker data.
+      faceTracker.onUpdate(function(data) {
+        model.setAttribute("position", data.position);
+      });
+    </script>
+  </body>
 </html>
