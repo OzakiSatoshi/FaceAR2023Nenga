@@ -14,8 +14,9 @@
       window.addEventListener('load', async () => {
         // WebARの初期化
         const webar = new WebAR();
-        await webar.init();
+        await webar.init({
         cameraPermissionDialog: true
+        });
 
         // フェイストラッキングの開始
         const tracker = await webar.startFaceTracking();
