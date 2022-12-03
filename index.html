@@ -15,12 +15,13 @@
         // WebARの初期化
         const webar = new WebAR();
         await webar.init();
+        cameraPermissionDialog: true
 
         // フェイストラッキングの開始
         const tracker = await webar.startFaceTracking();
     
         // GLBファイルのロード
-        const gltf = await webar.loadGLTF('model.glb');
+        const gltf = await webar.loadGLTF('models/model.glb');
     
         // 顔の任意の位置にGLBファイルを表示
         const face = tracker.getFace(0);
