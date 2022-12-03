@@ -1,13 +1,33 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
-<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://raw.githack.com/jeromeetienne/AR.js/2.1.5/aframe/build/aframe-ar.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAR Face Tracking</title>
 </head>
-<body style='margin : 0px; overflow: hidden;'>
-<a-scene embedded arjs='sourceType: webcam;'>
-<!-- 頭の上にGLBファイルを表示する -->
-<a-marker-camera preset='hiro'></a-marker-camera>
-<a-entity gltf-model="url(model.glb)" scale="0.001 0.001 0.001" face-tracking="head-position: top;"></a-entity>
-</a-scene>
+<body>
+    <h1>WebAR Face Tracking</h1>
+    <div id="webar-container"></div>
+    <script src="https://webarjs.org/webar.min.js"></script>
+    <script>
+      window.addEventListener('load', async () => {
+        // WebARの初期化
+        const webar = new WebAR();
+        await webar.init();
+
+        // フェイストラッキングの開始
+        const tracker = await webar.startFaceTracking();
+    
+        // GLBファイルのロード
+        const gltf = await webar.loadGLTF('model.glb');
+    
+        // 顔の任意の位置にGLBファイルを表示
+        const face = tracker.getFace(0);
+        const pos = face.getPositionForEye(WebAR.Face.LEFT_EYE);
+        gltf.position.set(pos.x, pos.y, pos.z);
+        webar.add(gltf);
+    });
+    </script>
 </body>
 </html>
