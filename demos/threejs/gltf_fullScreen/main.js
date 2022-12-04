@@ -2,8 +2,8 @@
 const SETTINGS = {
   gltfModelURL: 'models/gltf/usamimi.gltf',
   cubeMapURL: 'Bridge2/',
-  offsetYZ: [3.1, 0.1], // offset of the model in 3D along vertical and depth axis
-  scale: 2
+  offsetYZ: [2.8, 0.1], // offset of the model in 3D along vertical and depth axis
+  scale: 1.5
 };
 
 let THREECAMERA = null;
