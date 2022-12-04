@@ -4,7 +4,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="content-language" content="en-EN" />
     
-    <title>ver.6</title>
+    <title>ver.7</title>
     
     <!-- INCLUDE JEELIZ FACEFILTER SCRIPT -->
     <script src="../../../dist/jeelizFaceFilter.js"></script>
@@ -25,7 +25,59 @@
     <!-- INCLUDE FORK ME ON GITHUB BANNER -->
     <script src="../../appearance/widget.js"></script>
 
+    <script>
+      const screenshotButton = document.getElementById("screenshot-button");
+
+        screenshotButton.addEventListener("click", () => {
+          // スクリーンショットを撮る処理をここに記述します
+            // Google Chromeの場合
+            if (navigator.userAgent.indexOf("Chrome") !== -1) {
+              // Chromeの場合の処理をここに記述します
+              // Google Chromeの場合
+                if (navigator.userAgent.indexOf("Chrome") !== -1) {
+                  // canvas要素を作成します
+                  const canvas = document.createElement("canvas");
+
+                  // canvas要素の幅と高さをページ全体に設定します
+                  canvas.width = document.body.scrollWidth;
+                  canvas.height = document.body.scrollHeight;
+
+                  // 2Dコンテキストを取得します
+                  const context = canvas.getContext("2d");
+
+                  // ページ全体を描画します
+                  context.drawWindow(window, 0, 0, canvas.width, canvas.height, "rgb(255,255,255)");
+
+                  // canvas要素から画像データを取得し、それを画像として表示します
+                  const img = document.createElement("img");
+                  img.src = canvas.toDataURL();
+                  document.body.appendChild(img);
+                }
+            }
+
+            // Safariの場合
+            if (navigator.userAgent.indexOf("Safari") !== -1) {
+              // Safariの場合の処理をここに記述します
+              // video要素を作成します
+                const video = document.createElement("video");
+
+                // video要素の幅と高さをページ全体に設定します
+                video.width = document.body.scrollWidth;
+                video.height = document.body.scrollHeight;
+
+                // video要素をページに追加します
+                document.body.appendChild(video);
+
+                // video要素から画像データを取得し、それを画像として表示します
+                const img = document.createElement("img");
+                img.src = video.srcObject;
+                document.body.appendChild(img);
+            }
+          }
+       );
+    </script>
     <link rel="stylesheet" href="../../appearance/styleFullScreen.css" type="text/css" />
+    <button id="screenshot-button">スクリーンショットを撮る</button>
   </head>
   
   <body>
