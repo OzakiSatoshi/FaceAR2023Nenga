@@ -1,34 +1,44 @@
 <!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WebAR Face Tracking</title>
-</head>
-<body>
-    <h1>WebAR Face Tracking</h1>
-    <div id="webar-container"></div>
-    <script src="https://aframe.io/releases/0.9.2/aframe.min.js"></script>
-    <script src="https://unpkg.com/@tensorflow/tfjs@1.2.9/dist/tf.min.js"></script>
-    <script src="https://unpkg.com/@tensorflow-models/face-landmark-detection@0.1.0/dist/face-landmark-detection.js"></script>
-    <script>
-      window.addEventListener('load', async () => {
-        // フェイストラッキングの初期化
-        const faceapi = await faceLandmarkDetection.load();
-        const tracker = new faceapi.Webcam(document.getElementById('webar-container'), true);
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-language" content="ja" />
+    
+    <title>JEELIZ FACEFILTER: THREE.JS GLTF FULLSCREEN DEMO</title>
+    
+    <!-- INCLUDE JEELIZ FACEFILTER SCRIPT -->
+    <script src="./scripts/jeelizFaceFilter.js"></script>
 
-        // GLBファイルのロード
-        const gltf = await webar.loadGLTF('models/model.glb');
+    <!-- INCLUDE THREE.JS -->
+    <script src="https://unpkg.com/three@0.146.0/build/three.min.js"></script>
+    <!-- 元のリンクをコメントアウト 
+        <script src="../../../libs/three/v112/three.js"></script> 
+    -->
+    
+    <script src="https://unpkg.com/three@0.126.0/examples/js/loaders/GLTFLoader.js"></script>
 
-        // 毎フレーム更新処理
-        tracker.addEventListener('track', () => {
-            // 顔の任意の位置にGLBファイルを表示
-            const pos = face.getPositionForEye(faceapi.Face.LEFT_EYE);
-            gltf.position.set(pos.x, pos.y, pos.z);
-            webar.add(gltf);
-        });
-});
-</script>
-</body>
+    <!-- 元のリンクをコメントアウト 
+　　<script src="../../../libs/three/v112/GLTFLoader.js"></script>
+    -->
+
+    <!-- INCLUDE JEELIZRESIZER -->
+    <script src="./scripts/JeelizResizer.js"></script>
+
+    <!-- INCLUDE JEELIZ THREE.JS HELPER -->
+    <script src="./scripts/JeelizThreeHelper.js"></script>
+    
+    <!-- INCLUDE DEMO SCRIPT -->
+    <script src="./main.js"></script>
+
+    <!-- INCLUDE FORK ME ON GITHUB BANNER -->
+    <script src="./scripts/widget.js"></script>
+
+    <link rel="stylesheet" href="styleFullScreen.css" type="text/css" />
+  </head>
+  
+  <body>
+    <canvas width="600" height="600" id='jeeFaceFilterCanvas'></canvas>
+  </body>
 </html>
+ 
+ 
