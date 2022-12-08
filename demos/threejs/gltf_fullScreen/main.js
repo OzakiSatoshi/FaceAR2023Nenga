@@ -28,14 +28,6 @@ function init_threeScene(spec){
     path + 'posz' + format, path + 'negz' + format
   ] );
 
-  const path = SETTINGS2.cubeMapURL;
-  const format = '.jpg';
-  const envMap = new THREE.CubeTextureLoader().load( [
-    path + 'posx' + format, path + 'negx' + format,
-    path + 'posy' + format, path + 'negy' + format,
-    path + 'posz' + format, path + 'negz' + format
-  ] );
-
   // IMPORT THE GLTF MODEL:
   // from https://threejs.org/examples/#webgl_loader_gltf
   const gltfLoader = new THREE.GLTFLoader();
