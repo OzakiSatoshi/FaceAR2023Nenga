@@ -5,6 +5,12 @@ const SETTINGS = {
   offsetYZ: [1.0, 0.1], // offset of the model in 3D along vertical and depth axis
   scale: 1.5
 };
+const SETTINGS2 = {
+  gltfModelURL: 'models/gltf/Usa_hana.gltf',
+  cubeMapURL: 'Bridge2/',
+  offsetYZ: [1.0, 0.1], // offset of the model in 3D along vertical and depth axis
+  scale: 1.5
+};
 
 let THREECAMERA = null;
 
@@ -15,6 +21,14 @@ function init_threeScene(spec){
 
   // CREATE THE ENVMAP:
   const path = SETTINGS.cubeMapURL;
+  const format = '.jpg';
+  const envMap = new THREE.CubeTextureLoader().load( [
+    path + 'posx' + format, path + 'negx' + format,
+    path + 'posy' + format, path + 'negy' + format,
+    path + 'posz' + format, path + 'negz' + format
+  ] );
+
+  const path = SETTINGS2.cubeMapURL;
   const format = '.jpg';
   const envMap = new THREE.CubeTextureLoader().load( [
     path + 'posx' + format, path + 'negx' + format,
@@ -44,6 +58,30 @@ function init_threeScene(spec){
     // scale the model according to its width:
     const sizeX = bbox.getSize(new THREE.Vector3()).x;
     gltf.scene.scale.multiplyScalar(SETTINGS.scale / sizeX);
+
+    // dispatch the model:
+    threeStuffs.faceObject.add(gltf.scene);
+  } ); //end gltfLoader.load callback
+
+  gltfLoader.load( SETTINGS2.gltfModelURL, function ( gltf ) {
+    gltf.scene.traverse( function ( child ) {
+      if ( child.isMesh ) {
+        child.material.envMap = envMap;
+      }
+    } );
+    gltf.scene.frustumCulled = false;
+    
+    // center and scale the object:
+    const bbox = new THREE.Box3().expandByObject(gltf.scene);
+
+    // center the model:
+    const centerBBox = bbox.getCenter(new THREE.Vector3());
+    gltf.scene.position.add(centerBBox.multiplyScalar(-1));
+    gltf.scene.position.add(new THREE.Vector3(0,SETTINGS2.offsetYZ[0], SETTINGS2.offsetYZ[1]));
+
+    // scale the model according to its width:
+    const sizeX = bbox.getSize(new THREE.Vector3()).x;
+    gltf.scene.scale.multiplyScalar(SETTINGS2.scale / sizeX);
 
     // dispatch the model:
     threeStuffs.faceObject.add(gltf.scene);
