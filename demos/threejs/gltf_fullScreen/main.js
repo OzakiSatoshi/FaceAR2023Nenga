@@ -1,6 +1,6 @@
 // SETTINGS of this demo:
 const SETTINGS = {
-  gltfModelURL: 'models/gltf/usamimi.gltf',
+  gltfModelURL: 'models/gltf/Usa_mimi.gltf',
   cubeMapURL: 'Bridge2/',
   offsetYZ: [2.4, 0.1], // offset of the model in 3D along vertical and depth axis
   scale: 1.5
