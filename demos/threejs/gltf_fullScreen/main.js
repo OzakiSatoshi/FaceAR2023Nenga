@@ -8,7 +8,7 @@ const SETTINGS = {
 const SETTINGS2 = {
   gltfModelURL: 'models/gltf/Usa_hana.gltf',
   cubeMapURL: 'Bridge2/',
-  offsetYZ: [1.0, 0.1], // offset of the model in 3D along vertical and depth axis
+  offsetYZ: [0.8, 0.1], // offset of the model in 3D along vertical and depth axis
   scale: 1.5
 };
 
