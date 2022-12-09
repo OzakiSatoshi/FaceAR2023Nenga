@@ -125,5 +125,12 @@ function start(){
   }); //end JEELIZFACEFILTER.init call
 } //end start()
 
+  spec = {
+    GL: WebGLRenderingContext,
+    canvasElement: canvas,
+    videoTexture: WebGLTexture = null,
+    maxFacesDetected: 3,
+    videoElement: video
+  };
 
 window.addEventListener('load', main);
